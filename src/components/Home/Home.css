@@ -20,6 +20,10 @@
   background-color: #006e95;
   align-items: center;
 }
+.home__text {
+  color: white;
+  margin-bottom: 3%;
+}
 .login__btn {
   font-size: 20px;
   margin-top: 10px;
@@ -32,4 +36,7 @@
   width: 50%;
   border-radius: 20px;
   font-weight: bold;
+}
+.login__btn:hover {
+  background-color: #06afd9;
 }
