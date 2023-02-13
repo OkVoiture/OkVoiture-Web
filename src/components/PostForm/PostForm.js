@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
+import AsyncSelect from 'react-select/async';
+
 
 import "./PostForm.css";
+import {getVilles} from "../../utils/api/geoApi";
 
 function PostForm() {
     const [name, setName] = useState("");
@@ -11,15 +14,29 @@ function PostForm() {
     const [year, setYear] = useState(null);
     const [photo, setPhoto] = useState("une photo");
 
+    // handle selection
+    const handleChange = value => {
+        setVille(value);
+    }
+
+    async function fetchUsers() {
+        const apiResponse = await getVilles();
+        return apiResponse.map((ville) => {
+            return {
+                nom: ville.nom
+            }
+        });
+    }
+
     return (
         <div className="postForm">
             <div className="postForm__container">
-                <text className="postForm__title">
+                <h1 className="postForm__title">
                     Complete le formulaire s'il vous plaît
-                </text>
-                <text className={"postForm__subtitle"}>
+                </h1>
+                <h2 className={"postForm__subtitle"}>
                     Mon information
-                </text>
+                </h2>
                 <div className={"postForm_user_fomulaire"}>
                     <input
                         type="text"
@@ -35,17 +52,21 @@ function PostForm() {
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Votre e-mail"
                     />
-                    <input
-                        type="text"
+                    <AsyncSelect
                         className="postForm__textBox"
+                        cacheOptions
+                        defaultOptions
                         value={ville}
-                        onChange={(e) => setVille(e.target.value)}
+                        getOptionLabel={e => e.nom}
+                        getOptionValue={e => e.nom}
+                        loadOptions={fetchUsers}
+                        onChange={handleChange}
                         placeholder="Votre ville"
                     />
                 </div>
-                <text className={"postForm__subtitle"}>
+                <h2 className={"postForm__subtitle"}>
                     L'information de ma voiture
-                </text>
+                </h2>
                 <div className={"postForm_voiture_fomulaire"}>
                     <input
                         type="text"
