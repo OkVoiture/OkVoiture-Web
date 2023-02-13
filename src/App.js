@@ -1,5 +1,6 @@
 import './App.css';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
+import React from "react";
 import Home from "./components/Home/Home";
 import PostForm from "./components/PostForm/PostForm";
 
