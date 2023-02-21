@@ -1,9 +1,8 @@
 import React, {useState} from "react";
 import AsyncSelect from 'react-select/async';
-
-
 import "./PostForm.css";
 import {getVilles} from "../../utils/api/geoApi";
+import {createPost} from "../../utils/api/postApi";
 
 function PostForm() {
     const [name, setName] = useState("");
@@ -11,7 +10,8 @@ function PostForm() {
     const [ville, setVille] = useState("");
     const [marque, setMarque] = useState("");
     const [modele, setModele] = useState("");
-    const [year, setYear] = useState(null);
+    const [prix, setPrix] = useState("");
+    const [year, setYear] = useState("");
     const [photo, setPhoto] = useState("une photo");
 
     // handle selection
@@ -19,13 +19,22 @@ function PostForm() {
         setVille(value);
     }
 
-    async function fetchUsers() {
+    async function fetchVilles() {
         const apiResponse = await getVilles();
         return apiResponse.map((ville) => {
             return {
                 nom: ville.nom
             }
         });
+    }
+
+    const fileChangedHandler = (event) => {
+        setPhoto(event.target.files[0]);
+    }
+
+    const handleClickSend = async () => {
+        const apiResponse = await createPost(name, email, ville, marque, modele, prix, year, photo);
+        console.log("backend resp: ", apiResponse);
     }
 
     return (
@@ -59,7 +68,7 @@ function PostForm() {
                         value={ville}
                         getOptionLabel={e => e.nom}
                         getOptionValue={e => e.nom}
-                        loadOptions={fetchUsers}
+                        loadOptions={fetchVilles}
                         onChange={handleChange}
                         placeholder="Votre ville"
                     />
@@ -89,12 +98,21 @@ function PostForm() {
                         onChange={(e) => setYear(e.target.value)}
                         placeholder="L'année"
                     />
+                    <input
+                        type="text"
+                        className="postForm__textBox"
+                        value={prix}
+                        onChange={(e) => setPrix(e.target.value)}
+                        placeholder="Le prix par jour"
+                    />
+                    <input
+                        type="file"
+                        onChange={fileChangedHandler}
+                    />
                 </div>
                 <button
                     className="postForm__btn"
-                    onClick={() => {
-                        //handleClick();
-                    }}
+                    onClick={() => handleClickSend()}
                 >
                     Envoyer
                 </button>
