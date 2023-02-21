@@ -9,7 +9,7 @@ function Home() {
         navigate("/postList");
     }
 
-    const handleClickOffrir= () => {
+    const handleClickOffrir = () => {
         navigate("/postForm");
     }
     
